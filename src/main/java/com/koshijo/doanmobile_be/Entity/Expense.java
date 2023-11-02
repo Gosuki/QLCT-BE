@@ -30,7 +30,7 @@ public class Expense {
 
     @ManyToOne
     @JoinColumn(name = "expense_category_id")
-    private ExpenseCategory expenseCategory;
+    private ExpenseCategory expenseCategory ;
 
     @Column(name = "expense_note")
     private String expenseNote;
