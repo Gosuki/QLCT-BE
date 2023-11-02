@@ -27,8 +27,9 @@ public class Budget {
     @Column(name = "expense_date")
     private Date expenseDate;
 
-    @Column(name = "expense_category")
-    private String expenseCategory;
+    @ManyToOne
+    @JoinColumn(name = "expense_category_id")
+    private BudgetCategory budgetCategory;
 
     @Column(name = "expense_note")
     private String expenseNote;

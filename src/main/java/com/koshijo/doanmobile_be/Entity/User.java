@@ -26,10 +26,5 @@ public class User {
 
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "user")
 
-    private List<Expense> expenses;
-
-    @OneToMany(mappedBy = "user")
-    private List<Budget> budgets;
 }
