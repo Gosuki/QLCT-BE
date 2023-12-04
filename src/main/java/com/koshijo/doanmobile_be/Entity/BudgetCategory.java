@@ -29,4 +29,7 @@ public class BudgetCategory {
     @JoinColumn(name = "icon_id")
     private CategoryIcon categoryIcon;
 
+    private String color;
+    private String type;
+
 }

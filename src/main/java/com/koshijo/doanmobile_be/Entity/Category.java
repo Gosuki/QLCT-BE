@@ -7,28 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ExpenseCategories")
-@NoArgsConstructor
+@Table(name = "Categories")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class ExpenseCategory {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
+    private Long Id;
     @Column(name = "category_name")
     private String categoryName;
-
-    @OneToOne
-    @JoinColumn(name = "icon_id")
-    private CategoryIcon categoryIcon;
-
+    private String image;
     private String color;
     private String type;
 }

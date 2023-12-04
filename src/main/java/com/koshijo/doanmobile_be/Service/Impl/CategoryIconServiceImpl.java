@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryIconServiceImpl implements ICategoryIconService{
@@ -54,6 +57,22 @@ public class CategoryIconServiceImpl implements ICategoryIconService{
         categoryIconRepository.save(icon);
         return convertToDto(icon);
     }
+
+    @Override
+    public List<CategoryIconDto> getAllCategoriesIcon() {
+        List<CategoryIcon> categoryIconList = categoryIconRepository.findAll();
+        return categoryIconList.stream().map(categoryIcon ->{
+            return new CategoryIconDto(categoryIcon.getId(), categoryIcon.getCategoryPath());
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public byte[] downloadCategoryIconImage(Long id,String fileName) throws IOException {
+        CategoryIcon categoryIcon= categoryIconRepository.getCategoryIconByIdAndCategoryName(id,fileName);
+        String filePath = categoryIcon.getCategoryPath();
+        return Files.readAllBytes(new File(filePath).toPath());
+    }
+
     public CategoryIconDto convertToDto(CategoryIcon icon) {
         CategoryIconDto dto = new CategoryIconDto();
         dto.setId(icon.getId());
