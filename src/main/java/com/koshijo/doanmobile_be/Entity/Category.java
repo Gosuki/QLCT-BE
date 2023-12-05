@@ -18,7 +18,9 @@ public class Category {
     private Long Id;
     @Column(name = "category_name")
     private String categoryName;
-    private String image;
+    @OneToOne
+    @JoinColumn(name = "icon_id")
+    private CategoryIcon icon;
     private String color;
-    private String type;
+    private Type type;
 }

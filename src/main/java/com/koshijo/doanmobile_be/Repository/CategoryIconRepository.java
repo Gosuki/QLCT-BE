@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryIconRepository extends JpaRepository<CategoryIcon,Long> {
-    @Query(value="select u from CategoryIcon u where u.Id=:id AND u.categoryPath like %:name")
-    CategoryIcon getCategoryIconByIdAndCategoryName(Long id, String name);
+    @Query(value="select u from CategoryIcon u where u.categoryPath like %:name")
+    CategoryIcon getCategoryIconByIdAndCategoryName(String name);
 }

@@ -30,11 +30,11 @@ public class CategoryIconController {
                     new BaseResponse(HttpStatus.BAD_REQUEST.value(), e,e.getMessage()));
         }
     }
-    @GetMapping("/{id}/{fileName}")
-    public ResponseEntity<?> downloadImage(@PathVariable String fileName,@PathVariable Long id) throws IOException {
-        byte[] imageData = iCategoryIconService.downloadCategoryIconImage(id, fileName);
+    @GetMapping("/{fileName}")
+    public ResponseEntity<?> downloadImage(@PathVariable String fileName) throws IOException {
+        byte[] imageData = iCategoryIconService.downloadCategoryIconImage(fileName);
         return ResponseEntity.status(HttpStatus.OK)
-                .contentType(MediaType.valueOf(MediaType.APPLICATION_XML_VALUE))
+                .contentType(MediaType.valueOf("image/png"))
                 .body(imageData);
 
     }

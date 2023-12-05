@@ -25,4 +25,6 @@ public class CategoryIcon {
 
     @OneToOne(mappedBy = "categoryIcon")
     private BudgetCategory budgetCategory;
+    @OneToOne(mappedBy = "icon")
+    private Category category;
 }

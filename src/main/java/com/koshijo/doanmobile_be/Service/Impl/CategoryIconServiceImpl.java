@@ -53,7 +53,8 @@ public class CategoryIconServiceImpl implements ICategoryIconService{
             throw new RuntimeException(e);
         }
         CategoryIcon icon = new CategoryIcon();
-        icon.setCategoryPath(uploadPath.resolve(image.getOriginalFilename()).toString());
+//        Path url = Paths.get("main", "resources").resolve(staticPath).resolve(imagePath);
+        icon.setCategoryPath(image.getOriginalFilename());
         categoryIconRepository.save(icon);
         return convertToDto(icon);
     }
@@ -67,9 +68,9 @@ public class CategoryIconServiceImpl implements ICategoryIconService{
     }
 
     @Override
-    public byte[] downloadCategoryIconImage(Long id,String fileName) throws IOException {
-        CategoryIcon categoryIcon= categoryIconRepository.getCategoryIconByIdAndCategoryName(id,fileName);
-        String filePath = categoryIcon.getCategoryPath();
+    public byte[] downloadCategoryIconImage(String fileName) throws IOException {
+        CategoryIcon categoryIcon= categoryIconRepository.getCategoryIconByIdAndCategoryName(fileName);
+        String filePath = System.getProperty("user.dir")+"/src/main/resources/static/category-icons/" + categoryIcon.getCategoryPath();
         return Files.readAllBytes(new File(filePath).toPath());
     }
 

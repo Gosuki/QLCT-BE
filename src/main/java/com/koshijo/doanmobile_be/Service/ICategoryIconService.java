@@ -9,5 +9,5 @@ import java.util.List;
 public interface ICategoryIconService {
     CategoryIconDto uploadIcon(MultipartFile image);
     List<CategoryIconDto> getAllCategoriesIcon();
-    byte[] downloadCategoryIconImage(Long id, String fileName) throws IOException;
+    byte[] downloadCategoryIconImage(String fileName) throws IOException;
 }
