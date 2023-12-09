@@ -30,5 +30,5 @@ public class ExpenseCategory {
     private CategoryIcon categoryIcon;
 
     private String color;
-    private String type;
+    private Type type;
 }

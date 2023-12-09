@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
         Category category = new Category();
-        category.setCategoryName(category.getCategoryName());
+        category.setCategoryName(categoryDto.getCategoryName());
         category.setType(categoryDto.getType());
         category.setColor(categoryDto.getColor());
         Optional<CategoryIcon> categoryIcon = categoryIconRepository.findById(categoryDto.getIconId());

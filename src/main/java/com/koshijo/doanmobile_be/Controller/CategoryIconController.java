@@ -38,6 +38,13 @@ public class CategoryIconController {
                 .body(imageData);
 
     }
+    @GetMapping("/svg/{fileNameSVG}")
+    public ResponseEntity<?> downloadImageSVG(@PathVariable String fileNameSVG) throws IOException {
+        byte[] imageData = iCategoryIconService.downloadCategoryIconImage(fileNameSVG);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf(MediaType.APPLICATION_XML_VALUE))
+                .body(imageData);
+    }
     @GetMapping()
     public ResponseEntity<BaseResponse> getAllCategoriesIcon(){
         try{

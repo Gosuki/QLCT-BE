@@ -29,7 +29,6 @@ public class UserController {
             return ResponseEntity.badRequest().body(
                     new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Login Fail"));
         }
-
     }
     @PostMapping("/register")
     public ResponseEntity<BaseResponse> Register(@RequestBody UserDto userDto) {

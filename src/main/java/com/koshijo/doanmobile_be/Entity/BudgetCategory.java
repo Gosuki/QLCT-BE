@@ -30,6 +30,6 @@ public class BudgetCategory {
     private CategoryIcon categoryIcon;
 
     private String color;
-    private String type;
+    private Type type;
 
 }
