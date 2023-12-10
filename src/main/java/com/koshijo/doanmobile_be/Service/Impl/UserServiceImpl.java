@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,16 +34,19 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User createUser(UserDto userDto) {
         try {
-            Optional<User> existUser=userRepository.findUserByEmail(userDto.getEmail());
+            Optional<User> existUser = userRepository.findUserByEmail(userDto.getEmail());
             if(existUser.isPresent()){
                 throw new UserRegistrationException("Người dùng đã tồn tại.");
+            }
+            if (!Objects.equals(userDto.getPassword(), userDto.getRepeatPassword())){
+                throw new UserRegistrationException("Password không trùng nhau");
             }
             User user = new User();
             user.setUserName(userDto.getUsername());
             user.setEmail(userDto.getEmail());
             user.setPassword(userDto.getPassword());
             User savedUser = userRepository.save(user);
-            renderCategoryData(user);
+            renderCategoryData(savedUser);
             return user;
         } catch (UserRegistrationException ex){
             throw ex;
@@ -61,7 +61,7 @@ public class UserServiceImpl implements IUserService {
         return user.isPresent();
     }
     public void renderCategoryData(User user){
-        String[] categoryExpenseDefault = {"Ăn uống", "Quần áo", "Chi tiêu hàng ngày","Mỹ Phẩm","Y tế","Tiền điện","Đi lại","Tiền nhà"};
+        String[] categoryExpenseDefault = {"Ăn uống","Chi tiêu hàng ngày", "Quần áo","Mỹ phẩm","Phí giao lưu","Y tế","Giáo dục","Tiền điện","Đi lại","Phí liên lạc","Tiền nhà"};
         String[] categoryBudgetDefault = {"Tiền lương","Tiền phụ cấp","Tiền thưởng","Thu nhập phụ","Đầu tư","Thu nhập tạm thời"};
         List<ExpenseCategory> listCategoryExpenseDefault = categoryRepository.getCategoriesByType(Type.TYPE_EXPENSE)
                 .stream().filter(category -> Arrays.asList(categoryExpenseDefault).contains(category.getCategoryName()))
