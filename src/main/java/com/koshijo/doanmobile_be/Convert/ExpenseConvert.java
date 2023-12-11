@@ -11,14 +11,14 @@ import org.springframework.stereotype.Component;
 public class ExpenseConvert {
     public ExpenseDto toDTO(Expense expense){
         ExpenseDto expenseDto = new ExpenseDto();
-        if (expenseDto.getId() != null){
+        if (expense.getId() != null){
             expenseDto.setId(expense.getId());
         }
         expenseDto.setUserId(expense.getUser().getId());
         expenseDto.setExpenseDate(expense.getExpenseDate().toString());
         expenseDto.setExpenseNote(expense.getExpenseNote());
         expenseDto.setExpenseAmount(expense.getExpenseAmount());
-        expenseDto.setExpenseCategoryId(expense.getExpenseCategory().getCategoryId());
+        expenseDto.setExpenseCategoryId(expense.getExpenseCategory().getId());
         return expenseDto;
     }
     public Expense toEntity(ExpenseDto expenseDto){

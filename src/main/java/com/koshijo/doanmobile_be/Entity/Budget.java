@@ -21,16 +21,16 @@ public class Budget {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @Column(name = "expense_amount")
-    private double expenseAmount;
+    @Column(name = "budget_amount")
+    private double budgetAmount;
 
-    @Column(name = "expense_date")
-    private Date expenseDate;
+    @Column(name = "budget_date")
+    private Date budgetDate;
 
     @ManyToOne
-    @JoinColumn(name = "expense_category_id")
+    @JoinColumn(name = "budget_category_id")
     private BudgetCategory budgetCategory;
 
-    @Column(name = "expense_note")
-    private String expenseNote;
+    @Column(name = "budget_note")
+    private String budgetNote;
 }

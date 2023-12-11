@@ -52,7 +52,7 @@ public class ExpenseServiceImpl implements IExpenseService {
         }
         expense.setExpenseNote(expenseDto.getExpenseNote());
         expense.setExpenseAmount(expenseDto.getExpenseAmount());
-        expense.setExpenseCategory(expenseCategoryRepository.findExpenseCategoryByCategoryId(expenseDto.getExpenseCategoryId()).get());
+        expense.setExpenseCategory(expenseCategoryRepository.findExpenseCategoryById(expenseDto.getExpenseCategoryId()).get());
         expenseRepository.save(expense);
         return expenseConvert.toDTO(expense);
     }

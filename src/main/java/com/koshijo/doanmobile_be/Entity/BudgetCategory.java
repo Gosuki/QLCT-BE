@@ -15,8 +15,8 @@ import lombok.Setter;
 public class BudgetCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long categoryId;
+    @Column(name = "id")
+    private Long Id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
