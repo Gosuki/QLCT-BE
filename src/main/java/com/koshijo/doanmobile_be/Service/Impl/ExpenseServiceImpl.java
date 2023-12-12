@@ -2,6 +2,7 @@ package com.koshijo.doanmobile_be.Service.Impl;
 
 import com.koshijo.doanmobile_be.Convert.ExpenseConvert;
 import com.koshijo.doanmobile_be.Dto.ExpenseDto;
+import com.koshijo.doanmobile_be.Entity.Budget;
 import com.koshijo.doanmobile_be.Entity.Expense;
 import com.koshijo.doanmobile_be.Repository.ExpenseCategoryRepository;
 import com.koshijo.doanmobile_be.Repository.ExpenseRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -55,5 +57,11 @@ public class ExpenseServiceImpl implements IExpenseService {
         expense.setExpenseCategory(expenseCategoryRepository.findExpenseCategoryById(expenseDto.getExpenseCategoryId()).get());
         expenseRepository.save(expense);
         return expenseConvert.toDTO(expense);
+    }
+
+    @Override
+    public List<ExpenseDto> getAllExpensesByMonth(Long userId, int month) {
+        List<Expense> expenseList = expenseRepository.findExpensesByUserIdAndExpenseMonthOfDate(userId,month);
+        return expenseList.stream().map(budget -> expenseConvert.toDTO(budget)).toList();
     }
 }

@@ -21,5 +21,7 @@ public class ExpenseDto {
     private String expenseNote;
     private double expenseAmount;
     private Long expenseCategoryId ;
+    private String expenseCategoryName;
+    private String expenseCategoryIcon;
 
 }

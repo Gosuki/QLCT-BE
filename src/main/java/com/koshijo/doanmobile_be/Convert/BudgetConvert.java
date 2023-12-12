@@ -18,6 +18,8 @@ public class BudgetConvert {
         budgetDto.setBudgetNote(budget.getBudgetNote());
         budgetDto.setBudgetAmount(budget.getBudgetAmount());
         budgetDto.setBudgetCategoryId(budget.getBudgetCategory().getId());
+        budgetDto.setBudgetCategoryName(budget.getBudgetCategory().getCategoryName());
+        budgetDto.setBudgetCategoryIcon(budget.getBudgetCategory().getCategoryIcon().getCategoryPath());
         return budgetDto;
     }
     public Budget toEntity(BudgetDto budgetDto){

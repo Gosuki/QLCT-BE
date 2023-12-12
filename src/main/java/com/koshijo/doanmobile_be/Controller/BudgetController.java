@@ -8,10 +8,9 @@ import com.koshijo.doanmobile_be.Service.IExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/budgets")
@@ -26,6 +25,16 @@ public class BudgetController {
         } else {
                 return ResponseEntity.badRequest().body(
                         new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Created Fail"));
+        }
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse> getAllBudgetsByMonth(@PathVariable Long userId, @RequestParam("month") int month){
+        List<BudgetDto> budgetResponse = budgetService.getAllBudgetsByMonth(userId,month);
+        if (budgetResponse != null){
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.CREATED.value(),budgetResponse,"Get all budgets by month complete"));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Get all budgets by month fail"));
         }
     }
 }

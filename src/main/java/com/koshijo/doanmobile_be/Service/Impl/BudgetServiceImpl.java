@@ -56,4 +56,10 @@ public class BudgetServiceImpl implements IBudgetService {
         return budgetConvert.toDTO(budget);
     }
 
+    @Override
+    public List<BudgetDto> getAllBudgetsByMonth(Long userId, int month) {
+        List<Budget> budgetList = budgetRepository.findBudgetsByUserIdAndBudgetMonthOfDate(userId,month);
+        return budgetList.stream().map(budget -> budgetConvert.toDTO(budget)).toList();
+    }
+
 }

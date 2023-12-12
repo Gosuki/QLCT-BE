@@ -16,5 +16,7 @@ public class BudgetDto {
     private String budgetNote;
     private double budgetAmount;
     private Long budgetCategoryId ;
+    private String budgetCategoryName;
+    private String budgetCategoryIcon;
 
 }

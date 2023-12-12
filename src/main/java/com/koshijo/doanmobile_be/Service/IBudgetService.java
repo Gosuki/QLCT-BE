@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IBudgetService {
     BudgetDto createBudget(BudgetDto budgetDto);
-
+    List<BudgetDto> getAllBudgetsByMonth(Long userId, int month);
 }
