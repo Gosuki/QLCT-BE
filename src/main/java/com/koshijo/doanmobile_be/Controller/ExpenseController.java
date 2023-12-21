@@ -51,4 +51,15 @@ public class ExpenseController {
                     new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Get all expenses by month fail"));
         }
     }
+    @DeleteMapping("/delete/{userId}/{expenseId}")
+    public ResponseEntity<?> deleteExpense(@PathVariable(value = "userId") Long userId,
+                                                      @PathVariable(value = "expenseId") Long expenseId){
+        String message = expenseService.deleteExpense(userId,expenseId);
+        if (message != null){
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(),null,message));
+        }
+        else {
+            return ResponseEntity.badRequest().body(new BaseResponse(HttpStatus.BAD_REQUEST.value(),null,message));
+        }
+    }
 }

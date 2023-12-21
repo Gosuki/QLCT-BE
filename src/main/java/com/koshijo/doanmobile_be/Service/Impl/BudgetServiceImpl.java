@@ -7,6 +7,7 @@ import com.koshijo.doanmobile_be.Dto.BudgetDto;
 import com.koshijo.doanmobile_be.Entity.Budget;
 import com.koshijo.doanmobile_be.Repository.*;
 import com.koshijo.doanmobile_be.Service.IBudgetService;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,18 @@ public class BudgetServiceImpl implements IBudgetService {
         budget.setBudgetCategory(budgetCategoryRepository.findBudgetCategoryById(budgetDto.getCategoryId()).get());
         budgetRepository.save(budget);
         return budgetConvert.toDTO(budget);
+    }
+
+    @Override
+    @Transactional
+    public String deleteBudget(Long userId, Long budgetId) {
+        try {
+            budgetRepository.deleteBudgetByIdAndUserId(budgetId, userId);
+            return "Delete complete";
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 
 }

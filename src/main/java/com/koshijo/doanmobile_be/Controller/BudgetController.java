@@ -50,4 +50,17 @@ public class BudgetController {
                     new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Get all budgets by month fail"));
         }
     }
+
+    @DeleteMapping("/delete/{userId}/{budgetId}")
+
+    public ResponseEntity<?> deleteExpense(@PathVariable(value = "userId") Long userId,
+                                           @PathVariable(value = "budgetId") Long budgetId){
+        String message = budgetService.deleteBudget(userId,budgetId);
+        if (message != null){
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(),null,message));
+        }
+        else {
+            return ResponseEntity.badRequest().body(new BaseResponse(HttpStatus.BAD_REQUEST.value(),null,message));
+        }
+    }
 }

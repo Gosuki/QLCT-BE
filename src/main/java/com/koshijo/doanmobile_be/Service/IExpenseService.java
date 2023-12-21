@@ -10,4 +10,5 @@ public interface IExpenseService {
     List<BaseDto> getAllExpensesByMonthAndYear(Long userId, int month,long year);
 
     BaseDto updateExpense(Long expenseId, BaseDto expenseDto);
+    String deleteExpense(Long userId, Long expenseId);
 }

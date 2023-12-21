@@ -10,6 +10,7 @@ import com.koshijo.doanmobile_be.Repository.ExpenseCategoryRepository;
 import com.koshijo.doanmobile_be.Repository.ExpenseRepository;
 import com.koshijo.doanmobile_be.Repository.UserRepository;
 import com.koshijo.doanmobile_be.Service.IExpenseService;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,5 +90,17 @@ public class ExpenseServiceImpl implements IExpenseService {
         expense.setExpenseCategory(expenseCategoryRepository.findExpenseCategoryById(expenseDto.getCategoryId()).get());
         expenseRepository.save(expense);
         return baseConvert.toDTO_Expense(expense);
+    }
+
+    @Override
+    @Transactional
+    public String deleteExpense(Long userId, Long expenseId) {
+        try {
+            expenseRepository.deleteExpenseByIdAndUserId(expenseId, userId);
+            return "Delete complete";
+        }
+        catch (Exception e){
+            return null;
+        }
     }
 }

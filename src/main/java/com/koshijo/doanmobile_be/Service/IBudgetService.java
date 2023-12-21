@@ -10,4 +10,5 @@ public interface IBudgetService {
     List<BaseDto> getAllBudgetsByMonthAndYear(Long userId, int month,long year);
     BudgetDto updateBudget(Long budgetId,BaseDto budgetDto);
 
+    String deleteBudget(Long userId, Long budgetId);
 }
