@@ -1,6 +1,8 @@
 package com.koshijo.doanmobile_be.Service.Impl;
 
+import com.koshijo.doanmobile_be.Convert.BaseConvert;
 import com.koshijo.doanmobile_be.Convert.ExpenseConvert;
+import com.koshijo.doanmobile_be.Dto.BaseDto;
 import com.koshijo.doanmobile_be.Dto.ExpenseDto;
 import com.koshijo.doanmobile_be.Entity.Budget;
 import com.koshijo.doanmobile_be.Entity.Expense;
@@ -8,7 +10,6 @@ import com.koshijo.doanmobile_be.Repository.ExpenseCategoryRepository;
 import com.koshijo.doanmobile_be.Repository.ExpenseRepository;
 import com.koshijo.doanmobile_be.Repository.UserRepository;
 import com.koshijo.doanmobile_be.Service.IExpenseService;
-import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class ExpenseServiceImpl implements IExpenseService {
     private final ExpenseRepository expenseRepository;
     @Autowired
     private ExpenseConvert expenseConvert;
+    @Autowired
+    private BaseConvert baseConvert;
 
     public ExpenseServiceImpl(UserRepository userRepository, ExpenseCategoryRepository expenseCategoryRepository, ExpenseRepository expenseRepository) {
         this.userRepository = userRepository;
@@ -60,8 +63,31 @@ public class ExpenseServiceImpl implements IExpenseService {
     }
 
     @Override
-    public List<ExpenseDto> getAllExpensesByMonth(Long userId, int month) {
-        List<Expense> expenseList = expenseRepository.findExpensesByUserIdAndExpenseMonthOfDate(userId,month);
-        return expenseList.stream().map(budget -> expenseConvert.toDTO(budget)).toList();
+    public List<BaseDto> getAllExpensesByMonthAndYear(Long userId, int month, long year) {
+        List<Expense> expenseList = expenseRepository.findExpensesByUserIdAndExpenseMonthOfDate(userId,month,year);
+        return expenseList.stream().map(expense -> baseConvert.toDTO_Expense(expense)).toList();
+    }
+
+    @Override
+    public BaseDto updateExpense(Long expenseId, BaseDto expenseDto) {
+        Expense expense = expenseRepository.findExpenseByUserIdAndId(expenseDto.getUserId(),expenseId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", new Locale("vi", "VN"));
+        logger.info(expenseDto.getDate());
+        try {
+            Date date = sdf.parse(expenseDto.getDate());
+            if (date != null) {
+                expense.setExpenseDate(date);
+            } else {
+                logger.error("Parsing ngày thất bại.");
+                return null;
+            }
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+        }
+        expense.setExpenseNote(expenseDto.getNote());
+        expense.setExpenseAmount(expenseDto.getAmount());
+        expense.setExpenseCategory(expenseCategoryRepository.findExpenseCategoryById(expenseDto.getCategoryId()).get());
+        expenseRepository.save(expense);
+        return baseConvert.toDTO_Expense(expense);
     }
 }

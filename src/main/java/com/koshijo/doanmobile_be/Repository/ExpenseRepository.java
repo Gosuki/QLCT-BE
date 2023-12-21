@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     Optional<Expense> findExpenseById(Long id);
-    @Query(value = "select u from Expense u where u.user.Id=:userId and month(u.expenseDate) = :month")
-    List<Expense> findExpensesByUserIdAndExpenseMonthOfDate(Long userId, int month);
+    @Query(value = "select u from Expense u where u.user.Id=:userId and month(u.expenseDate) = :month and year(u.expenseDate) = :year")
+    List<Expense> findExpensesByUserIdAndExpenseMonthOfDate(Long userId, int month,long year);
+
+    Expense findExpenseByUserIdAndId(Long userId, Long expenseId);
 }

@@ -1,15 +1,13 @@
 package com.koshijo.doanmobile_be.Controller;
 
 import com.koshijo.doanmobile_be.Dto.BaseResponse;
+import com.koshijo.doanmobile_be.Dto.ChangePasswordRequest;
 import com.koshijo.doanmobile_be.Dto.UserDto;
 import com.koshijo.doanmobile_be.Entity.User;
 import com.koshijo.doanmobile_be.Service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -21,18 +19,59 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<BaseResponse> Login(@RequestBody UserDto userDto) {
-        if (iUserService.login(userDto)){
+        UserDto dto = iUserService.login(userDto);
+        if (dto != null){
             return ResponseEntity.ok(new BaseResponse(
-                    HttpStatus.OK.value(),null,
-                    "Login completed successfully "));
+                    HttpStatus.OK.value(),dto, "Login completed successfully "));
         }else {
             return ResponseEntity.badRequest().body(
-                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Login Fail"));
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), new Object(),"Login Fail"));
+        }
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse> getUser(@PathVariable(value = "userId") Long userId) {
+        UserDto dto = iUserService.getUser(userId);
+        if (dto != null){
+            return ResponseEntity.ok(new BaseResponse(
+                    HttpStatus.OK.value(),dto, "Get User completed "));
+        }else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), new Object(),"Get User Fail"));
         }
     }
     @PostMapping("/register")
-    public ResponseEntity<BaseResponse> Register(@RequestBody UserDto userDto) {
-        User user = iUserService.createUser(userDto);
-        return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(), user,"Register completed successfully"));
+    public ResponseEntity<BaseResponse> register(@RequestBody UserDto userDto) {
+        UserDto user = iUserService.createUser(userDto);
+        if (user != null){
+            return ResponseEntity.ok(
+                    new BaseResponse(HttpStatus.OK.value(), user,
+                            "Register completed successfully"));
+        }else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), new UserDto(),"Register Fail"));
+        }
+    }
+    @PutMapping("/changePassword/{userId}")
+    public ResponseEntity<BaseResponse> changePassword(@PathVariable(value = "userId") Long userId, @RequestBody ChangePasswordRequest passwordRequest){
+        UserDto user = iUserService.changePassword(userId,passwordRequest);
+        if (user != null){
+            return ResponseEntity.ok(
+                    new BaseResponse(HttpStatus.OK.value(), user,
+                            "Change password complete "));
+        }else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), new UserDto(),"Change password Fail"));
+        }
+    }
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<BaseResponse> forgotPassword(@RequestParam String email){
+       UserDto userDto = iUserService.forgotPassword(email);
+        if (userDto != null){
+            return ResponseEntity.ok(
+                    new BaseResponse(HttpStatus.OK.value(),userDto,
+                            "Password had send to email " + email));
+        }else {
+            return ResponseEntity.badRequest().body(new BaseResponse(HttpStatus.BAD_REQUEST.value(), new UserDto(),"Email not found"));
+        }
     }
 }

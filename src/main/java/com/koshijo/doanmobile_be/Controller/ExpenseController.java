@@ -1,9 +1,6 @@
 package com.koshijo.doanmobile_be.Controller;
 
-import com.koshijo.doanmobile_be.Dto.BaseResponse;
-import com.koshijo.doanmobile_be.Dto.BudgetDto;
-import com.koshijo.doanmobile_be.Dto.CategoryDto;
-import com.koshijo.doanmobile_be.Dto.ExpenseDto;
+import com.koshijo.doanmobile_be.Dto.*;
 import com.koshijo.doanmobile_be.Service.IExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,11 +29,23 @@ public class ExpenseController {
                         new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Created Fail"));
         }
     }
-    @GetMapping("/{userId}")
-    public ResponseEntity<BaseResponse> getAllExpensesByMonth(@PathVariable Long userId, @RequestParam("month") int month){
-        List<ExpenseDto> expenseResponse = expenseService.getAllExpensesByMonth(userId,month);
+    @PutMapping("/update/{expenseId}")
+    public ResponseEntity<BaseResponse>updateExpense(@PathVariable(value = "expenseId") Long expenseId,@RequestBody BaseDto expenseDto) {
+        BaseDto expenseResponse = expenseService.updateExpense(expenseId,expenseDto);
         if (expenseResponse != null){
-            return ResponseEntity.ok(new BaseResponse(HttpStatus.CREATED.value(),expenseResponse,"Get all expenses by month complete"));
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.UPGRADE_REQUIRED.value(),expenseResponse,"Created"));
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Created Fail"));
+        }
+    }
+    @GetMapping("/{userId}")
+    public ResponseEntity<BaseResponse> getAllExpensesByMonthAndYear(@PathVariable Long userId,
+                                                                     @RequestParam("month") int month,
+                                                                     @RequestParam("year") long year){
+        List<BaseDto> expenseResponse = expenseService.getAllExpensesByMonthAndYear(userId,month,year);
+        if (expenseResponse != null){
+            return ResponseEntity.ok(new BaseResponse(HttpStatus.OK.value(),expenseResponse,"Get all expenses by month complete"));
         } else {
             return ResponseEntity.badRequest().body(
                     new BaseResponse(HttpStatus.BAD_REQUEST.value(), null,"Get all expenses by month fail"));

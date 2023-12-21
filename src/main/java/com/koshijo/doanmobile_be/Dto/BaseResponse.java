@@ -7,12 +7,24 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class BaseResponse {
     private int statusCode;
 
     private Object data;
 
     private String message;
+
+    public BaseResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
+
+    public BaseResponse(int statusCode, Object data, String message) {
+        this.statusCode = statusCode;
+        this.data = data;
+        this.message = message;
+    }
+
+    public BaseResponse() {
+    }
 }

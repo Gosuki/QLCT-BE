@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface BudgetRepository extends JpaRepository<Budget, Long> {
-    @Query(value = "select u from Budget u where u.user.Id=:userId and month(u.budgetDate) = :month")
-    List<Budget> findBudgetsByUserIdAndBudgetMonthOfDate(Long userId, int month);
+    @Query(value = "select u from Budget u where" +
+            " u.user.Id=:userId and" +
+            " month(u.budgetDate) = :month and" +
+            " year (u.budgetDate) = :year")
+    List<Budget> findBudgetsByUserIdAndBudgetMonthOfDate(Long userId, int month,long year);
+    Budget findBudgetByUserIdAndId(Long userId,Long id);
 }

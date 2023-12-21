@@ -17,14 +17,11 @@ public class CategoryIcon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @OneToOne(mappedBy = "categoryIcon")
-    private ExpenseCategory expenseCategory;
 
     @Column(name = "category_path")
     private String categoryPath;
 
-    @OneToOne(mappedBy = "categoryIcon")
-    private BudgetCategory budgetCategory;
+
     @OneToOne(mappedBy = "icon")
     private Category category;
 }

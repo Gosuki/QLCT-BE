@@ -25,7 +25,7 @@ public class ExpenseCategory {
     @Column(name = "category_name")
     private String categoryName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "icon_id")
     private CategoryIcon categoryIcon;
 

@@ -1,6 +1,8 @@
 package com.koshijo.doanmobile_be.Service.Impl;
 
+import com.koshijo.doanmobile_be.Convert.BaseConvert;
 import com.koshijo.doanmobile_be.Convert.BudgetConvert;
+import com.koshijo.doanmobile_be.Dto.BaseDto;
 import com.koshijo.doanmobile_be.Dto.BudgetDto;
 import com.koshijo.doanmobile_be.Entity.Budget;
 import com.koshijo.doanmobile_be.Repository.*;
@@ -26,6 +28,8 @@ public class BudgetServiceImpl implements IBudgetService {
     private final BudgetRepository budgetRepository;
     @Autowired
     private BudgetConvert budgetConvert;
+    @Autowired
+    private BaseConvert baseConvert;
 
     public BudgetServiceImpl(UserRepository userRepository, BudgetCategoryRepository budgetCategoryRepository, BudgetRepository budgetRepository) {
         this.userRepository = userRepository;
@@ -57,9 +61,32 @@ public class BudgetServiceImpl implements IBudgetService {
     }
 
     @Override
-    public List<BudgetDto> getAllBudgetsByMonth(Long userId, int month) {
-        List<Budget> budgetList = budgetRepository.findBudgetsByUserIdAndBudgetMonthOfDate(userId,month);
-        return budgetList.stream().map(budget -> budgetConvert.toDTO(budget)).toList();
+    public List<BaseDto> getAllBudgetsByMonthAndYear(Long userId, int month,long year) {
+        List<Budget> budgetList = budgetRepository.findBudgetsByUserIdAndBudgetMonthOfDate(userId,month,year);
+        return budgetList.stream().map(budget -> baseConvert.toDTO_Budget(budget)).toList();
+    }
+
+    @Override
+    public BudgetDto updateBudget(Long budgetId,BaseDto budgetDto) {
+        Budget budget = budgetRepository.findBudgetByUserIdAndId(budgetDto.getUserId(),budgetId);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S", new Locale("vi", "VN"));
+        logger.info(budgetDto.getDate());
+        try {
+            Date date = sdf.parse(budgetDto.getDate());
+            if (date != null) {
+                budget.setBudgetDate(date);
+            } else {
+                logger.error("Parsing ngày thất bại.");
+                return null;
+            }
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+        }
+        budget.setBudgetNote(budgetDto.getNote());
+        budget.setBudgetAmount(budgetDto.getAmount());
+        budget.setBudgetCategory(budgetCategoryRepository.findBudgetCategoryById(budgetDto.getCategoryId()).get());
+        budgetRepository.save(budget);
+        return budgetConvert.toDTO(budget);
     }
 
 }
